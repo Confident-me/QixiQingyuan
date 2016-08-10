@@ -8,7 +8,9 @@
  */
 
 /* jshint expr: true */
- (function(root, factory) {
+
+;
+(function(root, factory) {
 
     if (typeof define === 'function' && define.amd) {
         define(['jquery'], factory);
@@ -18,8 +20,7 @@
         factory(root.jQuery);
     }
 
-} (this,
-function($) {
+}(this, function($) {
 
     $.transit = {
         version: "0.9.12",
@@ -79,12 +80,13 @@ function($) {
     support.filter = getVendorPropertyName('Filter');
     support.transform3d = checkTransform3dSupport();
 
+
     var eventNames = {
-        'transition': 'transitionend',
-        'MozTransition': 'transitionend',
-        'OTransition': 'oTransitionEnd',
-        'WebkitTransition': 'webkitTransitionEnd',
-        'msTransition': 'MSTransitionEnd'
+        'transition'       : 'transitionend',
+        'MozTransition'    : 'transitionend',
+        'OTransition'      : 'oTransitionEnd',
+        'WebkitTransition' : 'webkitTransitionEnd',
+        'msTransition'     : 'MSTransitionEnd'
     };
 
     // 检测是否支持transitionend事件
@@ -155,7 +157,7 @@ function($) {
         set: function(elem, v) {
             var value = v;
 
-            if (! (value instanceof Transform)) {
+            if (!(value instanceof Transform)) {
                 value = new Transform(value);
             }
 
@@ -223,7 +225,8 @@ function($) {
                 return elem.style[support.transition];
             },
             set: function(elem, value) {
-                console.log(elem, value) elem.style[support.transition] = value;
+              console.log(elem,value)
+                elem.style[support.transition] = value;
             }
         };
     }
@@ -282,7 +285,9 @@ function($) {
         //     // Same as set('scale', '2', '4');
         //
         setFromString: function(prop, val) {
-            var args = (typeof val === 'string') ? val.split(',') : (val.constructor === Array) ? val: [val];
+            var args =
+                (typeof val === 'string') ? val.split(',') :
+                (val.constructor === Array) ? val : [val];
 
             args.unshift(prop);
 
@@ -437,8 +442,7 @@ function($) {
         // Parses from a string. Called on constructor.
         parse: function(str) {
             var self = this;
-            str.replace(/([a-zA-Z0-9]+)\((.*?)\)/g,
-            function(x, prop, val) {
+            str.replace(/([a-zA-Z0-9]+)\((.*?)\)/g, function(x, prop, val) {
                 self.setFromString(prop, val);
             });
         },
@@ -452,7 +456,11 @@ function($) {
             for (var i in this) {
                 if (this.hasOwnProperty(i)) {
                     // Don't use 3D transformations if the browser can't support it.
-                    if ((!support.transform3d) && ((i === 'rotateX') || (i === 'rotateY') || (i === 'perspective') || (i === 'transformOrigin'))) {
+                    if ((!support.transform3d) && (
+                            (i === 'rotateX') ||
+                            (i === 'rotateY') ||
+                            (i === 'perspective') ||
+                            (i === 'transformOrigin'))) {
                         continue;
                     }
 
@@ -490,13 +498,14 @@ function($) {
     function getProperties(props) {
         var re = [];
 
-        $.each(props,
-        function(key) {
+        $.each(props, function(key) {
             key = $.camelCase(key); // Convert "text-align" => "textAlign"
             key = $.transit.propertyMap[key] || $.cssProps[key] || key;
             key = uncamel(key); // Convert back to dasherized
+
             // Get vendor specify propertie
-            if (support[key]) key = uncamel(support[key]);
+            if (support[key])
+                key = uncamel(support[key]);
 
             if ($.inArray(key, re) === -1) {
                 re.push(key);
@@ -532,8 +541,7 @@ function($) {
         // For more properties, add them this way:
         // "margin 200ms ease, padding 200ms ease, ..."
         var transitions = [];
-        $.each(props,
-        function(i, name) {
+        $.each(props, function(i, name) {
             transitions.push(name + ' ' + attribs);
         });
 
@@ -571,8 +579,7 @@ function($) {
         var delay = 0;
         var queue = true;
 
-        var theseProperties = $.extend(true, {},
-        properties);
+        var theseProperties = $.extend(true, {}, properties);
 
         // Account for `.transition(properties, callback)`.
         if (typeof duration === 'function') {
@@ -584,7 +591,7 @@ function($) {
         if (typeof duration === 'object') {
             easing = duration.easing;
             delay = duration.delay || 0;
-            queue = typeof duration.queue === "undefined" ? true: duration.queue;
+            queue = typeof duration.queue === "undefined" ? true : duration.queue;
             callback = duration.complete;
             duration = duration.duration;
         }
@@ -743,8 +750,7 @@ function($) {
     // Converts a camelcase string to a dasherized string.
     // (`marginLeft` => `margin-left`)
     function uncamel(str) {
-        return str.replace(/([A-Z])/g,
-        function(letter) {
+        return str.replace(/([A-Z])/g, function(letter) {
             return '-' + letter.toLowerCase();
         });
     }
